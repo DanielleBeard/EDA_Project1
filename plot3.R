@@ -1,0 +1,17 @@
+#PLOT 3
+#read data
+hpc <- read.table("household_power_consumption.txt", sep=";", nrows=2075260, header=TRUE, quote="", strip.white=TRUE, stringsAsFactors = FALSE, na.strings="?")
+#subset data to just the two days
+dates <- subset(hpc, (hpc$Date == "1/2/2007" | hpc$Date == "2/2/2007"))
+#change class of Date variable to Date
+dates$Date <- as.Date(dates$Date, format = "%d/%m/%Y")
+#combine the Date and Time to create a new column DateTime
+dates$DateTime <- as.POSIXct(paste(dates$Date, dates$Time))
+#Plot 3
+png("plot3.png", width = 480, height = 480)
+plot(dates$DateTime, dates$Sub_metering_1, type="l", ylab= "Energy sub metering", xlab="")
+lines(dates$DateTime, dates$Sub_metering_2, type="l", col="red")
+lines(dates$DateTime, dates$Sub_metering_3, type="l", col="blue")
+legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty=1, col=c("black", "red", "blue"))
+dev.off()
+
